@@ -9,6 +9,6 @@ export default createGlobalStyle`
     }
 
     body {
-        background: #F0F0F5;
+        background: lightgray;
     }
 `;

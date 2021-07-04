@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const NavBar = styled.div`
     display: flex;
     min-width: 350px;
-    /* width: 100%; */
     min-height: 2.5rem;
 
     background-color: blue;
@@ -18,15 +17,15 @@ export const NavBar = styled.div`
 `;
 
 export const Form = styled.form`
-    margin-top: 20px;
+    margin: 10px 30px;
     display: flex;
     flex-direction: row;
     place-content: center;
-    padding: 0px 45px;
-    min-width: 250px;
+    
+    min-width: 300px;
 
     input {
-
+        min-width: 250px;
         flex: 1;
         padding-left: 5px;
         height: 2rem;
@@ -41,42 +40,59 @@ export const Form = styled.form`
 `;
 
 export const Content = styled.div`
-    margin: 10px 35px;
-    min-width: 250px;
-    padding: 5px 10px;
-`;
-
-export const Previsao = styled.div`
-    width: auto;
+    margin: 10px 30px;
+    min-width: 300px;
     height: auto;
-    margin-top: 1rem;
-    padding: 10px 10px;
+    
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto 1fr ;
+    gap: 3%;
 
-    background: lightgray;
-
-
-    .data {
-        font-size: larger;
-        padding-bottom: 10px;
+    @media( max-width: 640px)    {
+        display: flex;
+        flex-direction: column;
     }
+
+    @media ( min-width: 641px ) and ( max-width: 960px)  {
+        
+        display: grid;
+        grid-template-columns: auto auto ;
+        grid-template-rows: auto 1fr ;
+        
+        height: 100vh;
+
+    }
+`;
+export const Previsao = styled.div`
+    display: flex;
+    max-height: 250px;
+    padding: 10px;
+    flex-direction: column;
+    
+    background: white;
+    
+    .data {
+            font-size: large;
+            padding-bottom: 10px;
+        }
 
     .descricao {
         h1 {
             margin: 5px 0px;
             width: auto;
-            font-size: large;
+            font-size: small;
             padding-bottom: 10px;
         }
     }
 
     .previsao {
-
         display: flex;
         flex-direction: column;
         height: auto;
         margin: 10px 0px;
 
-        
+
         .temperatura {
             display: flex;
             width: 100%;
@@ -85,29 +101,25 @@ export const Previsao = styled.div`
                 display: flex;
                 width: 50%;
 
-                place-content: center;
                 align-items: center;
 
                 h1 {
                     margin-left: 25px;
                     font-size: 20px;
-                    /* right: 0; */
                 }
 
                 img {
-                    height: 25px;
+                    height: 20px;
                 }
             }
             .min-temperatura {
                 display: flex;
                 width: 50%;
 
-                /* place-content: center; */
                 align-items: center;
                 h1 {
                     margin-left: 25px;
                     font-size: 20px;
-                    /* right: 0; */
                 }
 
                 img {
@@ -126,10 +138,9 @@ export const Previsao = styled.div`
                 display: flex;
                 width: 50%;
 
-                place-content: center;
                 align-items: center;
                 h1 {
-                    margin-left: 25px;
+                    margin-left: 20px;
                     font-size: 20px;
                 }
 
@@ -141,12 +152,10 @@ export const Previsao = styled.div`
                 display: flex;
                 width: 50%;
 
-                /* place-content: center; */
                 align-items: center;
                 h1 {
                     margin-left: 25px;
                     font-size: 20px;
-                    /* right: 0; */
                 }
 
                 img {
@@ -155,6 +164,210 @@ export const Previsao = styled.div`
             }
 
         }
-    
+
     }
+        
+    @media( max-width: 640px)
+    {   
+        min-width: 280px;
+        margin-bottom: 15px;
+
+        .data {
+            font-size: large;
+            padding-bottom: 10px;
+        }
+
+        .descricao {
+            h1 {
+                margin: 5px 0px;
+                width: auto;
+                font-size: x-small;
+                padding-bottom: 10px;
+            }
+        }
+
+        .previsao {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            margin: 10px 0px;
+
+
+            .temperatura {
+                display: flex;
+                width: 100%;
+
+                .max-temperatura {
+                    display: flex;
+                    width: 50%;
+
+                    align-items: center;
+
+                    h1 {
+                        margin-left: 25px;
+                        font-size: 20px;
+                    }
+
+                    img {
+                        height: 20px;
+                    }
+                }
+                .min-temperatura {
+                    display: flex;
+                    width: 50%;
+
+                    align-items: center;
+                    h1 {
+                        margin-left: 25px;
+                        font-size: 20px;
+                    }
+
+                    img {
+                        height: 25px;
+                    }
+                }
+            }
+
+            .informacoes {
+                
+                display: flex;
+                margin-top: 30px;
+                
+                .precipitacao {
+                    
+                    display: flex;
+                    width: 50%;
+
+                    align-items: center;
+                    h1 {
+                        margin-left: 20px;
+                        font-size: 20px;
+                    }
+
+                    img {
+                        height: 25px;
+                    }
+                }
+                .probabilidade-chuva {
+                    display: flex;
+                    width: 50%;
+
+                    align-items: center;
+                    h1 {
+                        margin-left: 25px;
+                        font-size: 20px;
+                    }
+
+                    img {
+                        height: 25px;
+                    }
+                }
+
+            }
+
+        }
+        
+    }
+
+    @media( min-width: 641px ) and ( max-width: 860px) 
+    {
+
+        min-width: 200px;
+        .data {
+            font-size: large;
+            padding-bottom: 10px;
+        }
+
+        .descricao {
+            h1 {
+                margin: 5px 0px;
+                width: auto;
+                font-size: x-small;
+                padding-bottom: 10px;
+            }
+        }
+
+        .previsao {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            margin: 10px 0px;
+
+
+            .temperatura {
+                display: flex;
+                width: 100%;
+
+                .max-temperatura {
+                    display: flex;
+                    width: 50%;
+
+                    align-items: center;
+
+                    h1 {
+                        margin-left: 25px;
+                        font-size: 25px;
+                    }
+
+                    img {
+                        height: 20px;
+                    }
+                }
+                .min-temperatura {
+                    display: flex;
+                    width: 50%;
+
+                    align-items: center;
+                    h1 {
+                        margin-left: 25px;
+                        font-size: 25px;
+                    }
+
+                    img {
+                        height: 25px;
+                    }
+                }
+            }
+
+            .informacoes {
+                
+                display: flex;
+                margin-top: 30px;
+                
+                .precipitacao {
+                    
+                    display: flex;
+                    width: 50%;
+
+                    align-items: center;
+                    h1 {
+                        margin-left: 20px;
+                        font-size: 25px;
+                    }
+
+                    img {
+                        height: 25px;
+                    }
+                }
+                .probabilidade-chuva {
+                    display: flex;
+                    width: 50%;
+
+                    align-items: center;
+                    h1 {
+                        margin-left: 25px;
+                        font-size: 25px;
+                    }
+
+                    img {
+                        height: 25px;
+                    }
+                }
+
+            }
+
+        }
+        
+    }
+    
 `;
