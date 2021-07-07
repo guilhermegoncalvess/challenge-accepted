@@ -17,7 +17,7 @@ export const NavBar = styled.div`
 `;
 
 export const Form = styled.form`
-    margin: 10px 30px;
+    margin: 10px 30px 0px 30px;
     display: flex;
     flex-direction: row;
     place-content: center;
@@ -38,6 +38,20 @@ export const Form = styled.form`
         }
     }
 `;
+
+export const ListSearch = styled.div`
+    display: flex;
+    min-width: 265px;
+    margin: 0px 30px;
+    background: white;
+    height: auto;
+
+    select {
+        width: 100%;
+    }
+    /* border: 1px solid red; */
+`;
+
 
 export const Content = styled.div`
     margin: 10px 30px;
