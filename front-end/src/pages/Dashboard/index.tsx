@@ -1,17 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 
-import { NavBar, Form, Content, Previsao, ListSearch } from './styles';
+import { NavBar, Form, Content, ListSearch } from './styles';
 
 import LogoImg from '../../assets/images/logo-white.png';
 import SearchImg from '../../assets/images/icons/search.png';
-import UpTemperaturaImg from '../../assets/images/icons/upload.png';
-import DownTemperaturaImg from '../../assets/images/icons/download.png';
-import PrecipitationImg from '../../assets/images/icons/raindrop-close-up.png';
-import UmbrellaImg from '../../assets/images/icons/protection-symbol-of-opened-umbrella-silhouette-under-raindrops.png';
+
 
 import api from '../../services/api';
-import Select from 'react-select';
+import Weather from '../../components/Weather';
+import axios from 'axios';
 
+interface WeatherData {
+    date: string;
+    text: string;
+    id: string;
+    locale: { 
+        id: string;
+        code: number;
+        name: string;
+        state: string;
+        latitude: number;
+        longitude: number;    
+    }
+    temperature: {
+        min: number;
+        max: number;
+    }
+    rain: {
+        probability: number;
+        precipitation: number;
+        
+    }
+}
 interface Cities {
     id: string;
     city: string;
@@ -32,6 +52,29 @@ interface DataCitiesSearch {
 const Dashboard: React.FC = () => {
     const [cities, setCities] = useState<Cities[]>([]);
     const [ city, setNewCity] = useState('');
+    const [weathers, setWeathers] = useState<WeatherData[]>([]);
+
+    useEffect(() => {
+        console.log(weathers)
+    }, [weathers])
+
+    async function loadWeathers(event: FormEvent<HTMLFormElement>): Promise<void> {
+
+        event.preventDefault();
+
+        await axios.get<WeatherData[]>('http://localhost:3333/weathers/625c13f0-e381-481d-b585-7fae72f199c7/').then( response => {
+            // console.log(response.data)
+    
+            const weather = response.data;
+
+            setWeathers(weather)
+            // weather.forEach( w => {
+            // })
+            
+            // console.log(weathers)
+
+        })
+    }
 
 
     async function handleSearchCity(event: any): Promise<void> {
@@ -43,22 +86,25 @@ const Dashboard: React.FC = () => {
         }
         else {
             try{
-                const {data} = await api.post<DataCitiesSearch>('/_search?pretty&size=10', {
-                    "query": {
-                      "match_phrase_prefix": {
-                        "city": city
-                      }
-                    }
-                  }
-                  );
+                // const {data} = await api.post<DataCitiesSearch>('/_search?pretty&size=10', {
+                //     "query": {
+                //       "match_phrase_prefix": {
+                //         "city": city
+                //       }
+                //     }
+                //   }
+                //   );
                   
-                  console.log(data)
-                  const arrCitities = data.hits.hits.map( data => {
-                      return { id: data._id, city: data._source.city }
-                  })
+                //   console.log(data)
+                //   const arrCitities = data.hits.hits.map( data => {
+                //       return { id: data._id, city: data._source.city }
+                //     })
+
+                //     arrCitities.map( city => {
+                //         setCities([...cities,city])      
+                //     })
     
-                  console.log(arrCitities)
-                  setCities(arrCitities)      
+                //   console.log(arrCitities)
     
             } catch(err) {
                 console.log(err)
@@ -74,7 +120,7 @@ const Dashboard: React.FC = () => {
                 <img src={LogoImg} alt="Clima Tempo" />
             </NavBar>
 
-            <Form>
+            <Form onSubmit={e => loadWeathers(e)}>
                 <input placeholder="Veja a previsão de sua cidade" onChange={ e => handleSearchCity(e)} />
                 <button type="submit" > 
                     <img src={SearchImg} alt="Pesquise a sua cidade"/>
@@ -91,171 +137,17 @@ const Dashboard: React.FC = () => {
 
             {/* <h1  >Previsão do Tempo</h1> */}
             <Content>
-                <Previsao>
-                    <h1 className="data">01/02/2017</h1>
-
-                    <span className="descricao">
-                        <h1>Sol com muitass nuvens durante o dia. Períodos de nublado, com chuva a qualquer hora.</h1>
-                    </span>
-
-                    <div className="previsao">
-                        <div className="temperatura">
-                            <div className="max-temperatura">
-                                <img src={UpTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>20°C</h1>
-
-                            </div>
-                            <div className="min-temperatura">
-                                <img src={DownTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>10°C</h1>
-
-                            </div>
-                        </div>
-                        <div className="informacoes">
-
-                            <div className="precipitacao">
-                                <img src={PrecipitationImg} alt="Precipitação" />
-                                <h1>10mm</h1>
-                            </div>
-                            <div className="probabilidade-chuva">
-                                <img src={UmbrellaImg} alt="Probabilida de Chuva" />
-                                <h1>50%</h1>
-                            </div>
-                        </div>
-                    </div>
-                </Previsao>
-                <Previsao>
-                    <h1 className="data">01/02/2017</h1>
-
-                    <span className="descricao">
-                        <h1>Sol com muitass nuvens durante o dia. Períodos de nublado, com chuva a qualquer hora.</h1>
-                    </span>
-
-                    <div className="previsao">
-                        <div className="temperatura">
-                            <div className="max-temperatura">
-                                <img src={UpTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>20°C</h1>
-
-                            </div>
-                            <div className="min-temperatura">
-                                <img src={DownTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>10°C</h1>
-
-                            </div>
-                        </div>
-                        <div className="informacoes">
-
-                            <div className="precipitacao">
-                                <img src={PrecipitationImg} alt="Precipitação" />
-                                <h1>10mm</h1>
-                            </div>
-                            <div className="probabilidade-chuva">
-                                <img src={UmbrellaImg} alt="Probabilida de Chuva" />
-                                <h1>50%</h1>
-                            </div>
-                        </div>
-                    </div>
-                </Previsao>
-                <Previsao>
-                    <h1 className="data">01/02/2017</h1>
-
-                    <span className="descricao">
-                        <h1>Sol com muitass nuvens durante o dia. Períodos de nublado, com chuva a qualquer hora.</h1>
-                    </span>
-
-                    <div className="previsao">
-                        <div className="temperatura">
-                            <div className="max-temperatura">
-                                <img src={UpTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>20°C</h1>
-
-                            </div>
-                            <div className="min-temperatura">
-                                <img src={DownTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>10°C</h1>
-
-                            </div>
-                        </div>
-                        <div className="informacoes">
-
-                            <div className="precipitacao">
-                                <img src={PrecipitationImg} alt="Precipitação" />
-                                <h1>10mm</h1>
-                            </div>
-                            <div className="probabilidade-chuva">
-                                <img src={UmbrellaImg} alt="Probabilida de Chuva" />
-                                <h1>50%</h1>
-                            </div>
-                        </div>
-                    </div>
-                </Previsao>
-                <Previsao>
-                    <h1 className="data">01/02/2017</h1>
-
-                    <span className="descricao">
-                        <h1>Sol com muitass nuvens durante o dia. Períodos de nublado, com chuva a qualquer hora.</h1>
-                    </span>
-
-                    <div className="previsao">
-                        <div className="temperatura">
-                            <div className="max-temperatura">
-                                <img src={UpTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>20°C</h1>
-
-                            </div>
-                            <div className="min-temperatura">
-                                <img src={DownTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>10°C</h1>
-
-                            </div>
-                        </div>
-                        <div className="informacoes">
-
-                            <div className="precipitacao">
-                                <img src={PrecipitationImg} alt="Precipitação" />
-                                <h1>10mm</h1>
-                            </div>
-                            <div className="probabilidade-chuva">
-                                <img src={UmbrellaImg} alt="Probabilida de Chuva" />
-                                <h1>50%</h1>
-                            </div>
-                        </div>
-                    </div>
-                </Previsao>
-                <Previsao>
-                    <h1 className="data">01/02/2017</h1>
-
-                    <span className="descricao">
-                        <h1>Sol com muitass nuvens durante o dia. Períodos de nublado, com chuva a qualquer hora.</h1>
-                    </span>
-
-                    <div className="previsao">
-                        <div className="temperatura">
-                            <div className="max-temperatura">
-                                <img src={UpTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>20°C</h1>
-
-                            </div>
-                            <div className="min-temperatura">
-                                <img src={DownTemperaturaImg} alt="Alta na temperatura" />
-                                <h1>10°C</h1>
-
-                            </div>
-                        </div>
-                        <div className="informacoes">
-
-                            <div className="precipitacao">
-                                <img src={PrecipitationImg} alt="Precipitação" />
-                                <h1>10mm</h1>
-                            </div>
-                            <div className="probabilidade-chuva">
-                                <img src={UmbrellaImg} alt="Probabilida de Chuva" />
-                                <h1>50%</h1>
-                            </div>
-                        </div>
-                    </div>
-                </Previsao>
+                {  
+                    weathers?.map( weather => {
+                        return (
+                        <Weather key={weather.id}
+                                date={weather.date}
+                                text={weather.text}
+                                temperature={weather.temperature}
+                                rain={weather.rain}
+                        />)
+                    })
+                }
             </Content>
            
         </>
