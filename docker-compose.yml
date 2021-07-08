@@ -1,0 +1,59 @@
+version: '3.3'
+services: 
+    elasticsearch_node1:
+        mem_limit: 1024M
+        container_name: elasticsearch_climatempo
+        image: elasticsearch:7.13.2
+        ports: 
+            - 9200:9200
+            - 9300:9300
+        environment:
+            discovery.type: single-node
+        
+        volumes:
+           -  ./elastic-suggester/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+           -  ./elastic-suggester/data:/usr/share/elasticsearch/data
+
+    db:
+        container_name: db_postgres_climatempo
+        image: postgres:12
+        env_file: 
+            - .env
+        networks:
+            - app-connect
+        ports:
+            - "5433:$DB_PORT"
+    
+    api:
+        container_name: api_climatempo
+        build: ./back-end/
+        depends_on:
+            - db
+        command:  [ "./wait-for-it.sh", 'db', "yarn", "dev:server"] 
+        env_file: 
+            - .env
+        ports:
+            - "3333:3333"
+        networks:
+            - default
+            - app-connect
+
+    app:
+        container_name: app_climatempo
+        build: ./front-end/
+        depends_on:
+            - api
+            - elasticsearch_node1
+        command: ["yarn", "start"]
+        env_file: 
+            - .env
+        networks:
+            - default
+            - app-connect
+        ports:
+            - "3000:3000"
+    
+networks:
+    default:
+    app-connect:
+        internal: True
