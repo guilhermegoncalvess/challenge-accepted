@@ -43,12 +43,31 @@ export const ListSearch = styled.div`
     min-width: 265px;
     margin: 0px 30px;
     background: white;
-    height: auto;
+    height: 300px;
+    overflow-y: scroll;
+    flex-direction: column;
 
-    select {
-        width: 100%;
+    ul {
+        background-color: lightgray;
     }
+    div {
+        height: 30px;
+        width: 100%;
+         
+        :hover{
+                /* border: 1px solid; */
+                background-color: green;
+                transition: 0.2s;
+    }
+        /* border: 0;
     /* border: 1px solid red; */
+    /* li  {
+        label :hover {
+
+        }
+
+    } */
+    }
 `;
 
 

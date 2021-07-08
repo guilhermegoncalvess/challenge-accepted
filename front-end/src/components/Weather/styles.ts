@@ -16,6 +16,7 @@ export const Previsao = styled.div`
 
     .descricao {
         h1 {
+            font: 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
             margin: 5px 0px;
             width: auto;
             font-size: small;
