@@ -27,7 +27,7 @@ class Weather {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne( () => Weather, () => Locale )
+    @ManyToOne( () => Locale )
     @JoinColumn({ name: 'locale_id'})
     locales: Locale;
 }

@@ -26,18 +26,31 @@ weathersRouter.get('/:id/period', async ( request, response ) => {
     return response.json({period: {begin: formatISO(parsedDateBegin,{representation: 'date'}), end: formatISO(parsedDateEnd,{representation: 'date'})},weathers});
 });
 
+weathersRouter.get('/:id', async ( request, response ) => {
+    const { id } = request.params;
+
+    const weathers = await weathersRepository.findByLocale(id);
+
+    return response.json(weathers);
+   
+});
+
 weathersRouter.post('/', async ( request, response ) => {
     const { locale_id, date, text, temperature, rain } = request.body; 
 
-    const weather = await weathersRepository.add({
-        locale_id,
-        date,
-        text,
-        temperature,
-        rain
-    });
-
-    return response.status(201).json(weather);
+    try {
+        const weather = await weathersRepository.add({
+            locale_id,
+            date,
+            text,
+            temperature,
+            rain
+        });
+    
+        return response.status(201).json(weather);
+    } catch (error) {
+        return response.json({error: error.message})
+    }
 });
 
 weathersRouter.put('/:id', async ( request, response ) => {

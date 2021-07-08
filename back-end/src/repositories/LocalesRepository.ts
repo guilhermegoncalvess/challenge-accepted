@@ -18,7 +18,7 @@ class localesRepository extends Repository<Locale> {
         const localesRepository = getRepository(Locale);
 
         const locales = await localesRepository.find({ 
-            select: ['id', 'name', 'state', 'latitude', 'longitude' ]
+            select: ['id', 'name', 'code', 'state', 'latitude', 'longitude' ]
         });
 
         return locales;

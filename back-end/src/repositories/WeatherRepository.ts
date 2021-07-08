@@ -3,6 +3,7 @@ import { getRepository, Repository } from "typeorm";
 import Weather from "../models/Weather";
 
 import { isAfter, isBefore, isEqual } from 'date-fns';
+import Locale from "../models/Locale";
 
 interface CreateWeather {
     id?: string;
@@ -19,13 +20,47 @@ class WeatherRepository extends Repository<Weather> {
         const weatherRepository = getRepository(Weather);
 
         const locales = await weatherRepository.find({ 
-            select: ['date', 'text', 'temperature', 'rain'],
+            select: ['id','date', 'text', 'temperature', 'rain'],
             relations: ['locales']
         });
 
         return locales;
     }
     
+    public async findByLocale(id: string): Promise<Weather[]> {
+
+        const localesRepository = getRepository(Locale);
+        const locale = await localesRepository.findOne({where: { code: id}})
+
+        
+        const weatherRepository = getRepository(Weather);
+        
+        if(!locale){
+            return []
+        }
+
+        const weather = await weatherRepository.find({ 
+            where: {locale_id: locale.id},
+            select: ['id','date', 'text', 'temperature', 'rain'],
+            relations: ['locales'],
+            order: {date: 'ASC'}
+        });
+
+        // const weatherFormated: any[] =  weather.map( sample => {
+        //     const weatherFormated = {
+        //             id: sample.id,
+        //             locale_id: sample.locale_id,
+        //             text: sample.text,
+        //             temperature: sample.temperature,
+        //             rain: sample.rain,
+        //             date: formatISO(sample.date, {representation: 'date'})
+        //    }
+            
+        //    return weatherFormated;
+        // });
+
+        return weather;
+    }
     public async findByDate(id: string, dateBegin: Date, DateEnd: Date): Promise<Weather[]> {
         const weatherRepository = getRepository(Weather);
 
@@ -33,11 +68,12 @@ class WeatherRepository extends Repository<Weather> {
             where: {locale_id: id},
             select: ['date', 'text', 'temperature', 'rain'],
             relations: ['locales'],
+            order: {date: 'ASC'}
         });
 
         const weatherByPeriod = weathers.filter( weather => { 
-            if(isAfter(weather.date, dateBegin) && isBefore(weather.date, DateEnd) || isEqual(weather.date,dateBegin) || isEqual(weather.date,DateEnd)) {
-                return weather.date;
+            if((isAfter(weather.date, dateBegin) && isBefore(weather.date, DateEnd) )) {
+                return weather;
             }
         });
 
