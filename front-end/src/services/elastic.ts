@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const elastic = axios.create({
-    baseURL: process.env.ELASTIC_URL
+    baseURL: 'http://localhost:9200/search/'
+    
 });
 
 export default elastic;

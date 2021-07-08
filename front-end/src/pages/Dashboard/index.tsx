@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
 import LogoImg from '../../assets/images/logo-white.png';
-import SearchImg from '../../assets/images/icons/search.png';
 
 import api from '../../services/api';
 import elastic from '../../services/elastic';
 
-import { NavBar, Form, Content, ListSearch } from './styles';
+import { NavBar, Form, Content, ListSearch, Title } from './styles';
 import Weather from '../../components/Weather';
 
 interface WeatherData {
@@ -56,17 +55,16 @@ const Dashboard: React.FC = () => {
     const [ cityFound, setNewCityFound] = useState('');
     const [weathers, setWeathers] = useState<WeatherData[]>([]);
 
-   
     async function loadWeathers(event: any, locale_code: number, city: string): Promise<void> {
+        
 
         event.preventDefault();
 
         
-        await api.get<WeatherData[]>(`/weathers/${locale_code}`).then( response => {    
+        await api.get<WeatherData[]>(`weathers/${locale_code}`).then( response => {    
             const weather= response.data;
             console.log(weather)
             
-        
             setWeathers(weather);
             setNewCityFound(city)
             setSuggestions([]);
@@ -81,12 +79,10 @@ const Dashboard: React.FC = () => {
         setNewSearchCity(event.target.value);
 
         if(event.target.value === '') {
-            console.log(event.target.value, 'ok')
             setSuggestions([])
         }
         else {
-            try{
-                const {data} = await elastic.post<DataCitiesSearch>('/_search?pretty&size=30', {
+            const {data} = await elastic.post<DataCitiesSearch>('_search?pretty&size=30', {
                     "query": {
                       "match_phrase_prefix": {
                         "city": searchCity
@@ -95,16 +91,11 @@ const Dashboard: React.FC = () => {
                   }
                   );
                   
-                  const cititiesFound = data.hits.hits.map( data => {
-                      return { id: data._id, city: data._source.city, code: data._source.code, state: data._source.state }
-                    });
+            const cititiesFound = data.hits.hits.map( data => {
+                return { id: data._id, city: data._source.city, code: data._source.code, state: data._source.state }
+            });
 
-                    setSuggestions(cititiesFound)   
-
-            } catch(err) {
-                console.log(err)
-            }
-
+            setSuggestions(cititiesFound);  
         }
 
     }
@@ -117,9 +108,6 @@ const Dashboard: React.FC = () => {
 
             <Form >
                 <input placeholder="Veja a previsão de sua cidade" onChange={ e => handleSearchCity(e)} />
-                <button type="submit" > 
-                    <img src={SearchImg} alt="Pesquise a sua cidade"/>
-                </button>
             </Form>
 
             {suggestions.length>0 && 
@@ -141,8 +129,8 @@ const Dashboard: React.FC = () => {
                 </ListSearch>
             }
 
-            { ((cityFound && weathers.length > 0) && <h1>Previsão do tempo em {cityFound}</h1> )}
-            { ((cityFound && weathers.length === 0) && <h1>Não há previsão do tempo para {cityFound}</h1> )}
+            { ((cityFound && weathers.length > 0) && <Title >Previsão do tempo em {cityFound}</Title> )}
+            { ((cityFound && weathers.length === 0) && <Title >Não há previsão do tempo para {cityFound}</Title> )}
 
             <Content>
                 {  

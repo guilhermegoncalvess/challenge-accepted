@@ -13,6 +13,9 @@ services:
         volumes:
            -  ./elastic-suggester/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
            -  ./elastic-suggester/data:/usr/share/elasticsearch/data
+        networks:
+            - default
+            - app-connect
 
     db:
         container_name: db_postgres_climatempo
@@ -20,9 +23,10 @@ services:
         env_file: 
             - .env
         networks:
+            - default
             - app-connect
         ports:
-            - "5433:$DB_PORT"
+            - "5432:$DB_PORT"
     
     api:
         container_name: api_climatempo
@@ -30,6 +34,8 @@ services:
         depends_on:
             - db
         command:  [ "./wait-for-it.sh", 'db', "yarn", "dev:server"] 
+        volumes:
+            -  .env:/usr/app/.env
         env_file: 
             - .env
         ports:
@@ -54,6 +60,6 @@ services:
             - "3000:3000"
     
 networks:
-    default:
     app-connect:
+        # name: app-connect
         internal: True

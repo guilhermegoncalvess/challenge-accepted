@@ -9,6 +9,6 @@ export default createGlobalStyle`
     }
 
     body {
-        background: white;
+        background: blue;
     }
 `;

@@ -7,9 +7,14 @@ export const Previsao = styled.div`
     padding: 10px;
     flex-direction: column;
     border-radius: 10px;
-    background-color: #c5cdee;
+    border: 1px solid black ;
+    box-shadow: 1px 2px 2px 2px black;
+    background: white;
+
+    opacity: 100% ;
+    /* filter: blur(); */
     .data {
-            font-size: large;
+            /* font-size: larger; */
             padding-bottom: 10px;
 
         }
@@ -43,6 +48,7 @@ export const Previsao = styled.div`
                 align-items: center;
 
                 h1 {
+                    color: red;
                     margin-left: 25px;
                     font-size: 20px;
                 }
@@ -57,6 +63,8 @@ export const Previsao = styled.div`
 
                 align-items: center;
                 h1 {
+                    
+                    color: #0288D1;
                     margin-left: 25px;
                     font-size: 20px;
  

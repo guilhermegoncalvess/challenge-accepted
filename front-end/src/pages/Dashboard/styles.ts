@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const Title = styled.h1`
+    margin: 20px 0px 30px 30px;
+`;
+
 export const NavBar = styled.div`
     display: flex;
     min-width: 350px;
@@ -40,33 +44,22 @@ export const Form = styled.form`
 
 export const ListSearch = styled.div`
     display: flex;
-    min-width: 265px;
+    min-width: 250px;
     margin: 0px 30px;
     background: white;
-    height: 300px;
+    max-height: 250px;
     overflow-y: scroll;
     flex-direction: column;
 
-    ul {
-        background-color: lightgray;
-    }
     div {
         height: 30px;
         width: 100%;
          
         :hover{
-                /* border: 1px solid; */
                 background-color: green;
                 transition: 0.2s;
     }
-        /* border: 0;
-    /* border: 1px solid red; */
-    /* li  {
-        label :hover {
 
-        }
-
-    } */
     }
 `;
 
@@ -79,7 +72,7 @@ export const Content = styled.div`
     grid-template-columns: auto auto auto auto;
     grid-template-rows: auto 1fr ;
     gap: 3%;
-
+    
     @media( max-width: 640px)    {
         display: flex;
         flex-direction: column;
